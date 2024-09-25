@@ -5,6 +5,8 @@ Tutorial on basic Python Programming.
 Example used is Jai-Alai-like Launcher
 
 @author: george.sidebotham@cooper.edu, michelle.rosen@cooper.edu
+
+Dylan Qiu & Jake Peyser ME200
 """
 
 ## IMPORT NECESSARY LIBRARIES
