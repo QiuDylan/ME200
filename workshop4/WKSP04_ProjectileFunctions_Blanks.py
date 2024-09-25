@@ -30,7 +30,9 @@ def TimeInTheAir(x,y,vx,vy):
 
 # #CALCULATE TRAJECTORY AND RETURN X, Y, VX, AND VY THROUGHOUT
 def Trajectory(x0,y0,vx0,vy0,time_list):
+     time_list = np.linspace(0,3,1000)
      g= 9.81 #m/s^2
+     g_list = [g] * len(time_list)
     
 #     #Calculate vx (should be a list of the same length as time_list)
      vx= vx0 * time_list

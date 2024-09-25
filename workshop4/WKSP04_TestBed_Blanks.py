@@ -55,7 +55,7 @@ y0= 9.81#m
 vx0= 0#m/s
 vy0= 0 #m/s
 time= TimeInTheAir(x0,y0,vx0,vy0)
-[x, y,vx, vy]=Trajectory(x0,y0,vx0,vy0,time)
+[x,y,vx,vy]=Trajectory(x0,y0,vx0,vy0,time)
 
 fig1=PlotTraj(x,y,vx,vy,time)
 fig1.suptitle('TITLE')
