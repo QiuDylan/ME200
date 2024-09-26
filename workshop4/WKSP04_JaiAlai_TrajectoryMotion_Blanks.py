@@ -81,7 +81,7 @@ time_traj=np.linspace(0,time_to_fall,1000)
 distance=x_projectile[-1]
 #distance *= -1 # change to right is positve
 #print(x_projectile)
-print('Horizontal distance = %.3g m' %distance)
+print('Horizontal distance = %.3g m' %abs(distance))
 
 
 # #how far does it travel?
@@ -160,5 +160,5 @@ ax1.set_title('Normal force and Torque required to maintain omega')
 fig4.tight_layout()
 
 # #Plot Projectile Trajectory
-fig5=PlotTraj(vx_projectile,vy_projectile,x_projectile,y_projectile,time_traj)
+fig5=PlotTraj(x_projectile,y_projectile,vx_projectile,vy_projectile,time_traj)
 fig5.suptitle('Ballistic Trajectory After Launch')

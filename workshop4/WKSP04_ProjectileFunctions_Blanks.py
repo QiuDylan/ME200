@@ -71,7 +71,7 @@ def PlotTraj(x,y,vx,vy,time_list):
     ax1.set_ylabel("position [m]")
 #    ax1.set_ylim(0)
     ax1.set_xlabel('time[s]')
-#    ax1.set_xlim(0)
+    ax1.set_xlim(0)
     ax1.legend()
     
     ax2 =fig0.add_subplot(313)
