@@ -13,10 +13,10 @@ Dylan Qiu & Jake Peyser ME200
 ## AS YOU WRITE THESE FUNCTIONS IN PROJECTILE FUNCTIONS, UNCOMMENT THE IMPORT LINE
 import numpy as np
 import matplotlib.pyplot as plt
-#from WKSP04_ProjectileFunctions_Blanks import RTtoCartesian
-#from WKSP04_ProjectileFunctions_Blanks import TimeInTheAir
-#from WKSP04_ProjectileFunctions_Blanks import Trajectory
-#from WKSP04_ProjectileFunctions_Blanks import PlotTraj
+from WKSP04_ProjectileFunctions_Blanks import RTtoCartesian
+from WKSP04_ProjectileFunctions_Blanks import TimeInTheAir
+from WKSP04_ProjectileFunctions_Blanks import Trajectory
+from WKSP04_ProjectileFunctions_Blanks import PlotTraj
 
 
 ## DEFINE INPUT PARAMETERS
@@ -57,40 +57,43 @@ print("Transverse velocity at launch = %.3g [m/s]" %v_theta[-1])
 
 # #Convert Launch location and velocities to cartesian coordinates
 # #Note: These are using the function you imported! 
-# [x, y]=RTtoCartesian(0, r, theta) #Convert all positions to cartesian
-# [vx, vy]=RTtoCartesian(v_theta, vr,theta) #Convert all velocities to cartesian
+[x, y]=RTtoCartesian(0, r, theta) #Convert all positions to cartesian
+[vx, vy]=RTtoCartesian(v_theta, vr,theta) #Convert all velocities to cartesian
 
 # #Pull out launch coordinates and location in cartesian (should be the last value in the list)
-# x0_launch= x[-1]
-# y0_launch= y[-1]
-# vx0_launch= vx[-1]
-# vy0_launch= vy[-1]
-# print("x component = %.3g m/s, y component = %.3g m/s" %(vx0_launch, vy0_launch))
+x0_launch= x[-1]
+y0_launch= y[-1]
+vx0_launch= vx[-1]
+vy0_launch= vy[-1]
+print("x launch = %.3g m, y launch = %.3g m" %(x0_launch, y0_launch))
+print("x component = %.3g m/s, y component = %.3g m/s" %(vx0_launch, vy0_launch))
 
 # #Find time to hit the ground
-# time_to_fall=TimeInTheAir(x0_launch,y0_launch,vx0_launch,vy0_launch)
+time_to_fall=TimeInTheAir(x0_launch,y0_launch,vx0_launch,vy0_launch)
 
 # #Setup new time array from 0 to the time to hit the ground
-# time_traj=np.linspace(0,time_to_fall,1000)
+time_traj=np.linspace(0,time_to_fall,1000)
 
 # #Calculate Trajectory
-# [x_projectile, y_projectile, vx_projectile, vy_projectile]=Trajectory(x0_launch,y0_launch,vx0_launch,vy0_launch,time_traj)
+[x_projectile, y_projectile, vx_projectile, vy_projectile]=Trajectory(x0_launch,y0_launch,vx0_launch,vy0_launch,time_traj)
 
 # #How far does it travel? 
-# distance=x_projectile[-1]
-# print('Horizontal distance = %.3g m' %distance)
+distance=x_projectile[-1]
+#distance *= -1 # change to right is positve
+#print(x_projectile)
+print('Horizontal distance = %.3g m' %distance)
 
 
 # #how far does it travel?
-# launch_angle = 180/np.pi*np.arctan(vy[-1]/-vx[-1])
-# if launch_angle < 45.:
-#     print("\nBall Launches at angle of %.4g deg from horizontal" %launch_angle)
-#     print("Enter a higher ratio r0/L next time to get it closer to 45 deg")
-#     print('where it would maximize distance traveled')
-# else:
-#     print("\nBall Launches at angle of %.4g deg from horizontal" %launch_angle)
-#     print("Enter a lower ratio r0/L next time to get it closer to 45 deg")
-#     print('where it would maximize distance traveled')
+launch_angle = 180/np.pi*np.arctan(vy[-1]/-vx[-1])
+if launch_angle < 45.:
+     print("\nBall Launches at angle of %.4g deg from horizontal" %launch_angle)
+     print("Enter a higher ratio r0/L next time to get it closer to 45 deg")
+     print('where it would maximize distance traveled')
+else:
+     print("\nBall Launches at angle of %.4g deg from horizontal" %launch_angle)
+     print("Enter a lower ratio r0/L next time to get it closer to 45 deg")
+     print('where it would maximize distance traveled')
         
 ##PLOT RESULTS
 #Figure with r vs theta
@@ -134,15 +137,15 @@ ax.set_title('Velocities in Polar Coordinates Before Launch')
 ax.legend()
 
 # #Figure with velocities in Cartesian Coords (x,y)
-# fig3 = plt.figure()
-# ax = fig3.add_subplot()
-# ax.plot(t, vx, label='x')
-# ax.plot(t, vy, label='y')
-# ax.plot(t, (vx**2 + vy**2)**0.5, label='Total')
-# ax.set_xlabel('time (s)')
-# ax.set_ylabel('Velocity (m/s)')
-# ax.set_title('Velocites in Cartesian Coordinates Before Launch')
-# ax.legend()
+fig3 = plt.figure()
+ax = fig3.add_subplot()
+ax.plot(t, vx, label='x')
+ax.plot(t, vy, label='y')
+ax.plot(t, (vx**2 + vy**2)**0.5, label='Total')
+ax.set_xlabel('time (s)')
+ax.set_ylabel('Velocity (m/s)')
+ax.set_title('Velocites in Cartesian Coordinates Before Launch')
+ax.legend()
 
 #Figure with normal force (giving Coriolis Accel)) and torque
 fig4 = plt.figure()
@@ -157,5 +160,5 @@ ax1.set_title('Normal force and Torque required to maintain omega')
 fig4.tight_layout()
 
 # #Plot Projectile Trajectory
-# fig5=PlotTraj(vx_projectile,vy_projectile,x_projectile,y_projectile,time_traj)
-# fig5.suptitle('Ballistic Trajectory After Launch')
+fig5=PlotTraj(vx_projectile,vy_projectile,x_projectile,y_projectile,time_traj)
+fig5.suptitle('Ballistic Trajectory After Launch')

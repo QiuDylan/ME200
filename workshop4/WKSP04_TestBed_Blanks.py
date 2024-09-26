@@ -43,19 +43,19 @@ y= 1#m
 vx=1 #m/s
 vy= 1#m/s
 t=TimeInTheAir(x,y,vx,vy)
-print('t = %.3g \n' %t)
+print('t = %.3g s\n' %t)
 
 
 # ##TEST YOUR TRAJECTORY CALCULATION FUNCTION##
 
-
-
 x0= 0 #m
-y0= 9.81#m
-vx0= 0#m/s
-vy0= 0 #m/s
-time= TimeInTheAir(x0,y0,vx0,vy0)
-[x,y,vx,vy]=Trajectory(x0,y0,vx0,vy0,time)
+y0= 0#m
+vx0= 10 #m/s
+vy0= 10 #m/s
+time = TimeInTheAir(x0, y0, vx0, vy0) #s
+time_list= np.linspace(0,time,100) 
+[x,y,vx,vy]=Trajectory(x0,y0,vx0,vy0,time_list)
+#print(time_list)
 
-fig1=PlotTraj(x,y,vx,vy,time)
-fig1.suptitle('TITLE')
+fig1=PlotTraj(x,y,vx,vy,time_list)
+fig1.suptitle('Launch from ground with 10m/s in both directions')
