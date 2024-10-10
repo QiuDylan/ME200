@@ -44,7 +44,7 @@ tracker_t=tracker_t-tracker_t[0] #reset tracker initial time to zero
 y0=tracker_y[0] #m, intiial drop height (extract from tracker data)
 vy0=0 #m/s, initial drop velocity
 x0=tracker_x[0] #m, initial x position
-vx0=1.3 #m/s initial x velocity - NOTE: YOU MAY NEED TO ADJUST THIS INDEX
+vx0=1.31#m/s initial x velocity - NOTE: YOU MAY NEED TO ADJUST THIS INDEX
 t_fall1 = (2*y0/g)**(1/2) #time of bounce
 T=tracker_t[-1] #t-final
 yf=0.703 #final y
@@ -64,17 +64,17 @@ y_temp = -0.5*g*t1**2+vy0*t1+y0 #calculate height
 x_temp= vx0*t1+x0 #calculate x position (assume no acceleration)
 y_temp1 = -0.5*g*t2**2+v_afterimpact*t2 #rising positions
 x_temp1 = vx0*t2 + 0.783 #rising positons
-print(y_temp1)
-zero_crossing = np.where(np.diff(np.sign(y_temp)))[0] #find where height crosses zero (hits ground)
+
+zero_crossing = np.where(np.diff(np.sign(y_temp1)))[0] #find where height crosses zero (hits ground)
 #t_temp = t_temp[0:zero_crossing[0]] #chop off the end of t_temp after the ball hits the ground (no negative height)
-#y_temp = y_temp[0:zero_crossing[0]] #chop off the end of y_temp
-#x_temp = x_temp[0:zero_crossing[0]]
+y_temp1 = y_temp1[0:zero_crossing[1]] #chop off the end of y_temp
+x_temp1 = x_temp1[0:zero_crossing[1]]
+
 #t_temp = t_temp+T[-1]+dt
 #T=np.append(T,t_temp) #append t_temp to the end of T
 #Y=np.append(Y,y_temp) #append y_temp to the end of Y
 #X=np.append(X,x_temp)
 v_beforeimpact = np.append(v_beforeimpact, (y_temp[-1]-y_temp[-2])/dt) #calculate velocity before impact
-print(zero_crossing)
 #T=np.append(T,t_temp) #append t_temp to the end of T
 Y=np.append(Y,y_temp) #append y_temp to the end of Y
 X=np.append(X,x_temp)
