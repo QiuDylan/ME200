@@ -24,7 +24,7 @@ tracker_data = np.nan_to_num(tracker_data,nan=0.0)
 #remove first three rows of data (you may or may not need this line depending on how tracker uploaded your data - take a look at the first few rows and make sure the time step is constant)
 #tracker_data=tracker_data[3:, :]
 #tracker_time=tracker_data[:0] #pull out time (will restart at zero later)
-tracker_time = np.genfromtxt("Workshop6_TrackerData.txt", skip_header=1, usecols=0)
+tracker_t = np.genfromtxt("Workshop6_TrackerData.txt", skip_header=1, usecols=0)
 tracker_x = np.genfromtxt("Workshop6_TrackerData.txt", skip_header=1, usecols=1)
 tracker_y = np.genfromtxt("Workshop6_TrackerData.txt", skip_header=1, usecols=2)
 #tracker_x = tracker_data[:1]
@@ -35,52 +35,97 @@ tracker_ax=tracker_data[:5]
 tracker_ay=tracker_data[:6]
 
 
-print(tracker_time)
+#print(tracker_y)
 
-tracker_time=tracker_time-tracker_time[0] #reset tracker initial time to zero
+tracker_t=tracker_t-tracker_t[0] #reset tracker initial time to zero
 
-dt_tracker=np.diff(tracker_time)[0]
+##SIMULATION##
+#Initialize variables for simulation
+y0=tracker_y[0] #m, intiial drop height (extract from tracker data)
+vy0=0 #m/s, initial drop velocity
+x0=tracker_x[0] #m, initial x position
+vx0=1.3 #m/s initial x velocity - NOTE: YOU MAY NEED TO ADJUST THIS INDEX
+t_fall1 = (2*y0/g)**(1/2) #time of bounce
+T=tracker_t[-1] #t-final
+yf=0.703 #final y
+#X=tracker_x #x-values
+t1 = np.linspace(0, t_fall1, 25) #t1
+t2 = np.linspace(0, T, 25)
+v_beforeimpact = (2*g*y0)**(1/2)
+v_afterimpact = (2*g*yf)**(1/2)
+print(t_fall1)
+X = []
+Y = []
+X = np.append(X,x0)
+Y = np.append(Y,y0)
+dt = 0.00005
+#t_temp = np.arange(0,5,dt) #set up temporary time array of arbitrary length
+y_temp = -0.5*g*t1**2+vy0*t1+y0 #calculate height 
+x_temp= vx0*t1+x0 #calculate x position (assume no acceleration)
+y_temp1 = -0.5*g*t2**2+v_afterimpact*t2 #rising positions
+x_temp1 = vx0*t2 + 0.783 #rising positons
+print(y_temp1)
+zero_crossing = np.where(np.diff(np.sign(y_temp)))[0] #find where height crosses zero (hits ground)
+#t_temp = t_temp[0:zero_crossing[0]] #chop off the end of t_temp after the ball hits the ground (no negative height)
+#y_temp = y_temp[0:zero_crossing[0]] #chop off the end of y_temp
+#x_temp = x_temp[0:zero_crossing[0]]
+#t_temp = t_temp+T[-1]+dt
+#T=np.append(T,t_temp) #append t_temp to the end of T
+#Y=np.append(Y,y_temp) #append y_temp to the end of Y
+#X=np.append(X,x_temp)
+v_beforeimpact = np.append(v_beforeimpact, (y_temp[-1]-y_temp[-2])/dt) #calculate velocity before impact
+print(zero_crossing)
+#T=np.append(T,t_temp) #append t_temp to the end of T
+Y=np.append(Y,y_temp) #append y_temp to the end of Y
+X=np.append(X,x_temp)
+Y=np.append(Y,y_temp1) #append y_temp1 to the end of Y
+X=np.append(X,x_temp1)
+#print(Y)
+#e = ((2*g*h_1)**1/2)/((2*g*h_3)**1/2)
+
+#plt.figure(3)
+#plt.plot(X,Y,'*',label='x vs y')
+#plt.plot(X,t1,'*',label='x vs t1')
+#plt.plot(Y,t1,'*',label='y vs t2')
+#plt.plot(X,t2,'*',label='x vs t1')
+#plt.plot(Y,t2,'*',label='y vs t2')
+plt.subplot(3,1,3)
+plt.plot(X,Y,'^',label='Simulation')
+plt.plot(tracker_x,tracker_y,'-',label='Data')
+plt.legend()
+plt.ylabel('Height[m]')
+plt.xlabel('x Distance [m]')
+plt.title('Trajectory')
+
+#plt.legend()
+
+#dt_tracker=np.diff(tracker_time)[0]
 
 #Plot tracker data
+"""
 fig1 = plt.figure()
-plt.subplot(3,1,1)
-plt.plot(tracker_time,tracker_x,label='x')
-plt.plot(tracker_time,tracker_y, label='y')
+plt.subplot()
+#plt.plot(tracker_t,tracker_x,label='x')
+plt.plot(tracker_t,tracker_y, label='y')
 plt.legend()
 plt.title('Position')
 plt.xlabel('Time [s]')
 plt.ylabel('Position [m]')
 
-plt.subplot(3,1,2)
-plt.plot(tracker_time,tracker_vx, label='vx')
-plt.plot(tracker_time,tracker_vy, label = 'vy')
-plt.legend()
-plt.title('Velocity')
-plt.xlabel('Time [s]')
-plt.ylabel('Velocity [m/s]')
-
-plt.subplot(3,1,3)
-plt.plot(tracker_time,tracker_ax, label='ax')
-plt.plot(tracker_time,tracker_ay, label='ay')
-plt.legend()
-plt.title('Acceleration')
-plt.xlabel('Time [s]')
-plt.ylabel('Acceleration [m/s^2]')
-
 #FIND PEAKS AND TROUGHS#
 #Use zero crossings of velocity
 #use moving average to smooth the velocity data
-def moving_average(x, w):
-    return np.convolve(x, np.ones(w), 'valid') / w
+#def moving_average(x, w):
+#    return np.convolve(x, np.ones(w), 'valid') / w
 
 window=5 #window for moving average- ADJUST THIS IF THE PEAKS AREN'T DETECTING PROPERLY
-smoothed_vy=moving_average(tracker_vy,window) #smooth the velocity data
+#smoothed_vy=moving_average(tracker_vy,window) #smooth the velocity data
 
 #plot velocity and smoothed velocity
 fig = plt.figure(2)
 
-plt.plot(tracker_time, tracker_vy, label='y velocity')
-plt.plot(tracker_time[int((window-1)/2-1):int((-window-1)/2)],smoothed_vy,label='y velocity smoothed')
+plt.plot(tracker_t, tracker_vy, label='y velocity')
+plt.plot(tracker_t[int((window-1)/2-1):int((-window-1)/2)],smoothed_vy,label='y velocity smoothed')
 plt.title('y Velocity and Smoothed y Velocity')
 plt.xlabel('Time [s]')
 plt.ylabel('Velocity [m/s]')
@@ -88,7 +133,8 @@ plt.legend()
 
 #Find peaks (max heights) and bounces 
 #You may need to play with some of the smoothing values or how many data points before the zero to work with your own video
-zero_crossings_vy = np.where(np.diff(np.sign(smoothed_vy)))[0] #find where v_y crosses zero (hits ground or reaches peak)
+#zero_crossings_vy = np.where(np.diff(np.sign(smoothed_vy)))[0] #find where v_y crosses zero (hits ground or reaches peak)
+
 
 #separate into bounces and peaks by looking at the velocity data a few time steps before
 tops = []
@@ -105,50 +151,33 @@ for i in range (0, len(zero_crossings_vy)):
 tops=tops.astype(int) #convert to integers to use as indices
 bounces=bounces.astype(int)
 
+
 #plot height and the tops/bounces to make sure we got them all - LOOK AT THIS GRAPH
+
 plt.figure(3)
 plt.plot(tracker_time,tracker_y, label='Height')
-plt.plot(tracker_time[tops],tracker_y[tops],'r.',label='Peaks')
-plt.plot(tracker_time[bounces], tracker_y[bounces],'g*',label="Bounces")
+#plt.plot(tracker_time[tops],tracker_y[tops],'r.',label='Peaks')
+#plt.plot(tracker_time[bounces], tracker_y[bounces],'g*',label="Bounces")
 plt.title('Peaks and Bounces')
 plt.ylabel('Height [m]')
 plt.xlabel('Time [m]')
 plt.legend()
 
 #CALCULATE COEFFICIENT OF RESTITUTION - MOST WORK SHOULD BE HERE! #
-"""
+
 e_vel=
 e_avg_vel=
 
 e_height=
 e_avg_height=
-"""
+
 ##SET COR HERE FOR SIMULATION##
 #e = ((2*g*h_1)**1/2)/((2*g*h_3)**1/2)
 
 
 
-
-
-##SIMULATION##
-#Initialize variables for simulation
-y0=tracker_y[0] #m, intiial drop height (extract from tracker data)
-vy0=0 #m/s, initial drop velocity
-x0=tracker_x[0] #m, initial x position
-vx0=(0.001)/(0.033) #m/s initial x velocity - NOTE: YOU MAY NEED TO ADJUST THIS INDEX
-t_fall1 = (2*y0/g)**1/2 #time of bounce
-T=tracker_t[:-1] #t-final
-Y=tracker_y[:-1] #y-final
-X=tracker_x[:-1] #x-final
-t1 = np.linspace(0, t_fall1, 1000) #t1
-t2 = np.linspace(t_fall1, T, 1000)
-v_beforeimpact = (2*g*y0)**(1/2)
-v_afterimpact = (2*g*Y)**(1/2)
-
-dt = 0.0005 #timestep (s) for simulation
-
 #drop to first bounce
-t_temp = np.arange(0,t1,dt) #set up temporary time array of arbitrary length
+t_temp = np.arange(0,5,dt) #set up temporary time array of arbitrary length
 y_temp = -0.5*g*t_temp**2+vy0*t_temp+y0 #calculate height 
 x_temp= vx0*t_temp+x0 #calculate x position (assume no acceleration)
 zero_crossing = np.where(np.diff(np.sign(y_temp)))[0] #find where height crosses zero (hits ground)
@@ -158,11 +187,12 @@ x_temp = x_temp[0:zero_crossing[0]]
 
 v_beforeimpact = np.append(v_beforeimpact, (y_temp[-1]-y_temp[-2])/dt) #calculate velocity before impact
 
-T=np.append(T,t_temp) #append t_temp to the end of T
-Y=np.append(Y,y_temp) #append y_temp to the end of Y
-X=np.append(X,x_temp)
+#T=np.append(T,t_temp) #append t_temp to the end of T
+#Y=np.append(Y,y_temp) #append y_temp to the end of Y
+#X=np.append(X,x_temp)
 
 #Subsequent bounces
+
 y_ground = 0 #point where the ball bounces - can adjust this to match your video
 i = 1 #set up index for bounces
 numbounce = 5 #how many bounces to look at
@@ -185,6 +215,9 @@ for i in range(1,numbounce):
     Y=np.append(Y,y_temp) #append y_temp to the end of Y
     X=np.append(X,x_temp)
     i += 1
+
+
+
 
 #Plot position and trajectory of simulation versus data
 plt.figure(4)
@@ -252,3 +285,4 @@ plt.legend()
 plt.title('ay')
 plt.ylabel('ay [m/s^2]')
 plt.xlabel('Time [s]')
+"""
