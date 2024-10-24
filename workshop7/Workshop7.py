@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """
+Dylan Qiu & Clarence Tang
 Created on Tue Oct 12 07:18:56 2021
 Pendulum with Large initial angle
 @author: george.sidebotham2
@@ -10,7 +11,7 @@ from scipy.integrate import odeint
 import matplotlib.pyplot as plt
 
 #INITIAL CONDITIONS
-theta_0 = 90.   #deg, initial angle
+theta_0 = 10.   #deg, initial angle
 omega_0 = 0.   #rad/sec released from rest
 #INPUT PARAMETERS
 L = 0.9     #m, length of pendulum
