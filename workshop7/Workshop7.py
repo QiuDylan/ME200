@@ -72,12 +72,37 @@ def density(l,w,t,m):
     density = m / (l*w*t)
     return density
 
-#def I_cm(l,w,t,m):
-    
+def I_cm(l,w,t,m):
+    i_cm = m*(w**2/12+l**2/12)
+    return i_cm
 
+def I_anchor(l,w,t,m):
+    Icm = I_cm(l,w,t,m)
+    i_anchor = Icm + m * (l/2)**2 
+    return i_anchor
+
+theta = theta_0
+def T_react(l,w,t,m, theta):
+    Ft = m*g*np.sin(theta)
+  
+    return Ft
+def N_react(l,w,t,m, theta):
+    Fn = m*g*np.cos(theta)
+    print(Fn)
+    return Fn
+    
 def driver():
     density1 = density(l,w,t,m)
+    i_cm1 = I_cm(l,w,t,m)
+    i_anchor1 = I_anchor(l,w,t,m)
+    Ft = T_react(l,w,t,m,theta)
+    Fn = N_react(l,w,t,m,theta)
     print('Density = %.4f kg/m^3' %density1)
+    print('I_cm = %.4f kg*m^2' %i_cm1)
+    print('I_anchor = %.4f kg*m^2' %i_anchor1)
+    print('F_t = %.4f N' %Ft)
+    print('F_n = %.4f N' %Fn)
+    
 
 
 driver()
