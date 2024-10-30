@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Dylan Qiu & Clarence Tang
+Dylan Qiu & Clarence Tang & Ethan Chia
 Created on Tue Oct 12 07:18:56 2021
 Pendulum with Large initial angle
 @author: george.sidebotham2
@@ -61,3 +61,25 @@ plt.subplot(3,1,3)
 plt.plot(t,T_mg)
 plt.ylabel("T/mg")
 plt.xlabel('time (sec)')  
+
+#Plendulum
+#Inputs
+l = 1.835 #m
+w = 0.0425 #m
+t = 0.006 #m
+m = 0.226 #kg
+def density(l,w,t,m):
+    density = m / (l*w*t)
+    return density
+
+#def I_cm(l,w,t,m):
+    
+
+def driver():
+    density1 = density(l,w,t,m)
+    print('Density = %.4f kg/m^3' %density1)
+
+
+driver()
+
+
