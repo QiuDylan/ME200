@@ -11,7 +11,7 @@ from scipy.integrate import odeint
 import matplotlib.pyplot as plt
 
 #INITIAL CONDITIONS
-theta_0 = 14.   #deg, initial angle
+theta_0 = 15.   #deg, initial angle
 omega_0 = 0.   #rad/sec released from rest
 #INPUT PARAMETERS
 L = 0.90     #m, length of plendulum 
@@ -68,7 +68,7 @@ l = 1.835 #m
 w = 0.0425 #m
 t = 0.006 #m
 m = 0.226 #kg
-r = 0.88 #m length from com to anchor CHANGE THIS
+r = 0.56 #m length from com to anchor CHANGE THIS
 tau_p = 2*np.pi*np.sqrt(l/g)
 def density(l,w,t,m):
     density = m / (l*w*t)
@@ -81,7 +81,7 @@ def I_cm(l,w,t,m):
 
 def I_anchor(l,w,t,m):
     Icm = I_cm(l,w,t,m)
-    i_anchor = Icm + m * (r/2)**2 
+    i_anchor = Icm + m * r**2 
     return i_anchor
 
 def get_alpha(l,w,t,m):
@@ -94,7 +94,7 @@ def T_react(l,w,t,m):
     return Ft
 def N_react(l,w,t,m):
     Fn = m*g*np.cos(theta_0) 
-    
+    #no other term here cause taking the t = 0 instant 
     return Fn
 
 def eom1(y,t):
@@ -146,7 +146,7 @@ def driver():
     print('I_anchor = %.4f kg*m^2' %i_anchor1)
     print('F_t = %.4f N' %Ft)
     print('F_n = %.4f N' %Fn)
-    print('Alpha = %.4f N' %alpha)
+    print('Alpha = %.4f rad/s^2' %alpha)
     
 driver()
 
