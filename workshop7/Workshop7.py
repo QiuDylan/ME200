@@ -11,7 +11,7 @@ from scipy.integrate import odeint
 import matplotlib.pyplot as plt
 
 #INITIAL CONDITIONS
-theta_0 = 10.   #deg, initial angle
+theta_0 = 14.   #deg, initial angle
 omega_0 = 0.   #rad/sec released from rest
 #INPUT PARAMETERS
 L = 0.90     #m, length of plendulum 
@@ -68,7 +68,8 @@ l = 1.835 #m
 w = 0.0425 #m
 t = 0.006 #m
 m = 0.226 #kg
-r = 0.26 #m length from com to anchor 
+r = 0.88 #m length from com to anchor CHANGE THIS
+tau_p = 2*np.pi*np.sqrt(l/g)
 def density(l,w,t,m):
     density = m / (l*w*t)
   
@@ -92,7 +93,7 @@ def T_react(l,w,t,m):
   
     return Ft
 def N_react(l,w,t,m):
-    Fn = m*g*np.cos(theta_0)
+    Fn = m*g*np.cos(theta_0) 
     
     return Fn
 
@@ -100,13 +101,13 @@ def eom1(y,t):
     theta, omega = y
     ydot = np.zeros(2)
     ydot[0] = omega
-    ydot[1] = -r * m * g * np.sin(theta)/I_cm(l,w,t,m)
+    ydot[1] = -r * m * g * np.sin(theta)/I_anchor(l,w,t,m)
     return ydot
 #Initial Conditions
 x0 = [theta_0, omega_0]
 
 #Define time array
-time = np.linspace(0, 10*tau, 1000)
+time = np.linspace(0, 10*tau_p, 1000)
 #SOLVE SYSTEM OF EQUATIONS
 sol = odeint(eom1,x0,time)
 
@@ -147,8 +148,6 @@ def driver():
     print('F_n = %.4f N' %Fn)
     print('Alpha = %.4f N' %alpha)
     
-
-
 driver()
 
 
