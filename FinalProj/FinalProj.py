@@ -24,13 +24,14 @@ y = np.genfromtxt("finaldata.txt", skip_header=1, usecols=2 ) #third ""
 
 theta = 24 * np.pi /180 #Windscreen angle in radians
 g = 9.81 #m/s^2
-mu_k = 0.5  #between wiper and windscreen
+mu_k = 0.3  #between wiper and windscreen
 
 wiper = 24.5 * 25.4 #link dc mm 
 
 fd = 3.17 * 25.4 #mm
 gf = 12.69 * 25.4 #mm
 og = 2.11 * 25.4 #mm
+od = 13.4 * 25.4 #mm 
 mass_wiper = #kg
 
 def link_equations(a_wiper):
