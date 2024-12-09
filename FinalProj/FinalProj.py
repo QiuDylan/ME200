@@ -29,17 +29,34 @@ mu_k = 0.3  #between wiper and windscreen
 wiper = 24.5 * 25.4 #link dc mm 
 
 fd = 3.17 * 25.4 #mm
-gf = 12.69 * 25.4 #mm
+gf = 12.5 * 25.4 #mm
 og = 2.11 * 25.4 #mm
 od = 13.4 * 25.4 #mm 
 mass_wiper = 3.48 #kg
-
+m_rpm1 = 45 
+m_rpm2 = 65
+def find_v_wiper(m_rpm):
+    w_m = - m_rpm * np.pi / 180 #convert rpm to rad/s
+    v_gx = w_m * og * np.cos(np.radians(52.45))
+    v_gy = w_m * og * np.sin(np.radians(52.45))
+    w_fd = (v_gy-v_gx * np.tan(np.radians(15.4))) / (fd * (np.sin(np.radians(25.1)) - np.cos(np.radians(25.1)) * np.tan(np.radians(15.4))))
+    w_gf = (w_fd * fd * np.cos(25.1 * np.pi/180) - v_gx)/ (gf* np.cos(15.4 * np.pi/180))
+    v_fx = v_gx + w_gf * gf * np.cos(15.4 * np.pi/180)
+    v_fy = v_gx + w_gf * gf * np.sin(15.4 * np.pi/180)
+    v_wiper = w_fd * fd 
+    print("hello")
+    
+    return v_wiper 
+    
 def link_equations(a_wiper):
     F_wiper = mass_wiper * a_wiper - mu_k * mass_wiper * g * np.cos(theta)
     
     #m_torque = 1
 
     return F_wiper 
+
+v_wiper1 = find_v_wiper(m_rpm1)
+print(v_wiper1)
 """
 fig0 = plt.figure()
 plt.subplots_adjust(left=None, bottom=None, right=None, top=None, wspace= None, hspace=.75)
