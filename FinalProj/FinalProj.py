@@ -33,6 +33,7 @@ gf = 12.5 * 25.4 #mm
 og = 2.11 * 25.4 #mm
 od = 13.4 * 25.4 #mm 
 mass_wiper = 3.48 #kg
+
 m_rpm1 = 45 
 m_rpm2 = 65
 def find_v_wiper1(m_rpm):
@@ -52,16 +53,25 @@ def find_v_wiper2(m_rpm):
     w_m = - m_rpm * np.pi / 180 #convert rpm to rad/s
     v_gx = w_m * og * np.cos(np.radians(59.4))
     v_gy = w_m * og * np.sin(np.radians(59.4))
-    w_fd = (v_gy-v_gx * np.tan(np.radians(17.4))) / (fd * (np.sin(np.radians(132.569-17.4)) - np.cos(np.radians(132.569-17.4)) * np.tan(np.radians(17.4))))
-    w_gf = (w_fd * fd * np.cos((132.569-17.4) * np.pi/180) - v_gx)/ (gf* np.cos(17.4 * np.pi/180))
+    w_fd = (v_gy-v_gx * np.tan(np.radians(17.4))) / (fd * (np.sin(np.radians(180-132.569-17.4)) - np.cos(np.radians(180-132.569-17.4)) * np.tan(np.radians(17.4))))
+    w_gf = (w_fd * fd * np.cos((180-32.569-17.4) * np.pi/180) - v_gx)/ (gf* np.cos(17.4 * np.pi/180))
     v_fx = v_gx + w_gf * gf * np.cos(17.4 * np.pi/180)
     v_fy = v_gx + w_gf * gf * np.sin(17.4 * np.pi/180)
     v_wiper = w_fd * fd 
     v_wiper *= 1/100 #convert to m/s
     
     return v_wiper 
-    
-def link_equations(a_wiper):
+def find_a_wiper1():
+    t = 1.5 - 0.833 #s
+    a_1 = find_v_wiper1(m_rpm1) / t
+    return a_1 
+
+def find_a_wiper2():
+    t = 1 - 0.5 #s
+    a_2 = find_v_wiper2(m_rpm2) / t
+    return a_2
+
+def friction(a_wiper):
     F_wiper = mass_wiper * a_wiper - mu_k * mass_wiper * g * np.cos(theta)
     
     #m_torque = 1
@@ -72,7 +82,10 @@ v_wiper1 = find_v_wiper1(m_rpm1)
 print(v_wiper1)
 v_wiper2 = find_v_wiper2(m_rpm2)
 print(v_wiper2)
-
+a_1 = find_a_wiper1()
+print(a_1)
+a_2 = find_a_wiper2()
+print(a_2)
 
 fig0 = plt.figure()
 plt.subplots_adjust(left=None, bottom=None, right=None, top=None, wspace= None, hspace=.75)
