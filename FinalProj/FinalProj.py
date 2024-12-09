@@ -30,14 +30,14 @@ wiper = 24.5 * 25.4 #link dc mm
 
 fd = 3.17 * 25.4 #mm
 gf = 12.5 * 25.4 #mm
-og = 2.11 * 25.4 #mm
+og = 1.97 * 25.4 #mm
 od = 13.4 * 25.4 #mm 
 mass_wiper = 3.48 #kg
 
 m_rpm1 = 45 
 m_rpm2 = 65
 def find_v_wiper1(m_rpm):
-    w_m = - m_rpm * np.pi / 180 #convert rpm to rad/s
+    w_m =  m_rpm * np.pi / 180 #convert rpm to rad/s
     v_gx = w_m * og * np.cos(np.radians(52.45))
     v_gy = w_m * og * np.sin(np.radians(52.45))
     w_fd = (v_gy-v_gx * np.tan(np.radians(15.4))) / (fd * (np.sin(np.radians(25.1)) - np.cos(np.radians(25.1)) * np.tan(np.radians(15.4))))
@@ -50,7 +50,7 @@ def find_v_wiper1(m_rpm):
     return v_wiper 
 
 def find_v_wiper2(m_rpm):
-    w_m = - m_rpm * np.pi / 180 #convert rpm to rad/s
+    w_m =  m_rpm * np.pi / 180 #convert rpm to rad/s
     v_gx = w_m * og * np.cos(np.radians(59.4))
     v_gy = w_m * og * np.sin(np.radians(59.4))
     w_fd = (v_gy-v_gx * np.tan(np.radians(17.4))) / (fd * (np.sin(np.radians(180-132.569-17.4)) - np.cos(np.radians(180-132.569-17.4)) * np.tan(np.radians(17.4))))
@@ -71,21 +71,48 @@ def find_a_wiper2():
     a_2 = find_v_wiper2(m_rpm2) / t
     return a_2
 
-def friction(a_wiper):
-    F_wiper = mass_wiper * a_wiper - mu_k * mass_wiper * g * np.cos(theta)
-    
-    #m_torque = 1
-
+def friction():
+    F_wiper = mu_k * mass_wiper * g * np.cos(theta)
+   
     return F_wiper 
 
+def m_torque():
+    a_1 = find_a_wiper1()
+    F_c = friction() -mass_wiper * a_1 
+    t_d1 = fd * F_c # input torque into 4 bar linkage 
+    t_motor1 = t_d1 * fd * np.cos(np.radians(90-49.59)) * og * np.sin(np.radians(37.045)) 
+    
+    a_2 = find_a_wiper2()
+    F_c2 = mass_wiper * a_2 - friction() 
+    t_d2 = fd * F_c2 # input torque into 4 bar linkage 
+    t_motor2 = t_d2 * fd * np.cos(np.radians(90-42.569)) * og * np.sin(np.radians(42))
+    
+    t_motor1 *= 1/10000 #convert to nm
+    t_motor2 *= 1/10000
+    return t_motor1,t_motor2
+
+
+
 v_wiper1 = find_v_wiper1(m_rpm1)
-print(v_wiper1)
+print("Wiper velocity at setting 1 = %.3g m/s" %v_wiper1)
 v_wiper2 = find_v_wiper2(m_rpm2)
-print(v_wiper2)
+print("Wiper velocity at setting 2 = %.3g m/s"%v_wiper2)
 a_1 = find_a_wiper1()
-print(a_1)
+print("Wiper acceleration at setting 1 = %.3g m/s^2"%a_1)
 a_2 = find_a_wiper2()
-print(a_2)
+print("Wiper acceleration at setting 2 = %.3g m/s^2"%a_2)
+F_wiper1 = friction()
+print("Friction = %.3g N"%F_wiper1)
+Force1 = mass_wiper * a_1
+print("m*a_1 = %.3g N"%Force1)
+Force = mass_wiper * a_2
+print("m*a_2 = %.3g N"%Force)
+t_motor = m_torque()[0]
+print("motor torque = %.3g Nm"%t_motor)
+t_motor2 = m_torque()[1]
+print("motor torque = %.3g Nm"%t_motor2)
+
+
 
 fig0 = plt.figure()
 plt.subplots_adjust(left=None, bottom=None, right=None, top=None, wspace= None, hspace=.75)
