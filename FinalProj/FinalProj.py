@@ -76,7 +76,7 @@ def friction():
    
     return F_wiper 
 
-def m_torque():
+def m_torque(): #find motor torque using acceleration found before 
     a_1 = find_a_wiper1()
     F_c = friction() - (mass_wiper * a_1 )
     t_d1 = fd * F_c # input torque into 4 bar linkage 
