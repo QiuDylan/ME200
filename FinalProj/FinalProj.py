@@ -78,12 +78,12 @@ def friction():
 
 def m_torque():
     a_1 = find_a_wiper1()
-    F_c = friction() -mass_wiper * a_1 
+    F_c = friction() - (mass_wiper * a_1 )
     t_d1 = fd * F_c # input torque into 4 bar linkage 
     t_motor1 = t_d1 * fd * np.cos(np.radians(90-49.59)) * og * np.sin(np.radians(37.045)) 
     
     a_2 = find_a_wiper2()
-    F_c2 = mass_wiper * a_2 - friction() 
+    F_c2 = (mass_wiper * a_2) - friction() 
     t_d2 = fd * F_c2 # input torque into 4 bar linkage 
     t_motor2 = t_d2 * fd * np.cos(np.radians(90-42.569)) * og * np.sin(np.radians(42))
     
@@ -108,9 +108,9 @@ print("m*a_1 = %.3g N"%Force1)
 Force = mass_wiper * a_2
 print("m*a_2 = %.3g N"%Force)
 t_motor = m_torque()[0]
-print("motor torque = %.3g Nm"%t_motor)
+print("motor torque slow = %.5g Nm"%t_motor)
 t_motor2 = m_torque()[1]
-print("motor torque = %.3g Nm"%t_motor2)
+print("motor torque fast = %.5g Nm"%t_motor2)
 
 
 
@@ -128,6 +128,8 @@ ax0.set_ylabel("x_position [m]")
 ax0.set_xlabel('time[s]')
 ax0.set_xlim(0,8)
 ax0.legend()
+
+
 """
 fig1 = plt.figure()
 plt.subplots_adjust(left=None, bottom=None, right=None, top=None, wspace= None, hspace=.75)
