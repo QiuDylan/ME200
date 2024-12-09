@@ -35,7 +35,7 @@ od = 13.4 * 25.4 #mm
 mass_wiper = 3.48 #kg
 m_rpm1 = 45 
 m_rpm2 = 65
-def find_v_wiper(m_rpm):
+def find_v_wiper1(m_rpm):
     w_m = - m_rpm * np.pi / 180 #convert rpm to rad/s
     v_gx = w_m * og * np.cos(np.radians(52.45))
     v_gy = w_m * og * np.sin(np.radians(52.45))
@@ -44,7 +44,20 @@ def find_v_wiper(m_rpm):
     v_fx = v_gx + w_gf * gf * np.cos(15.4 * np.pi/180)
     v_fy = v_gx + w_gf * gf * np.sin(15.4 * np.pi/180)
     v_wiper = w_fd * fd 
-    print("hello")
+    v_wiper *= 1/100 #convert to m/s
+    
+    return v_wiper 
+
+def find_v_wiper2(m_rpm):
+    w_m = - m_rpm * np.pi / 180 #convert rpm to rad/s
+    v_gx = w_m * og * np.cos(np.radians(59.4))
+    v_gy = w_m * og * np.sin(np.radians(59.4))
+    w_fd = (v_gy-v_gx * np.tan(np.radians(17.4))) / (fd * (np.sin(np.radians(132.569-17.4)) - np.cos(np.radians(132.569-17.4)) * np.tan(np.radians(17.4))))
+    w_gf = (w_fd * fd * np.cos((132.569-17.4) * np.pi/180) - v_gx)/ (gf* np.cos(17.4 * np.pi/180))
+    v_fx = v_gx + w_gf * gf * np.cos(17.4 * np.pi/180)
+    v_fy = v_gx + w_gf * gf * np.sin(17.4 * np.pi/180)
+    v_wiper = w_fd * fd 
+    v_wiper *= 1/100 #convert to m/s
     
     return v_wiper 
     
@@ -55,9 +68,12 @@ def link_equations(a_wiper):
 
     return F_wiper 
 
-v_wiper1 = find_v_wiper(m_rpm1)
+v_wiper1 = find_v_wiper1(m_rpm1)
 print(v_wiper1)
-"""
+v_wiper2 = find_v_wiper2(m_rpm2)
+print(v_wiper2)
+
+
 fig0 = plt.figure()
 plt.subplots_adjust(left=None, bottom=None, right=None, top=None, wspace= None, hspace=.75)
 ax0 =fig0.add_subplot(211)
@@ -87,4 +103,4 @@ ax1.set_ylabel("y")
 ax1.set_xlabel('x')
 #ax1.set_xlim(0,8)
 ax1.legend()
-
+"""
