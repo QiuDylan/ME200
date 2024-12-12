@@ -1,4 +1,4 @@
-#!/usr/bin/env .conda
+#!/usr/bin/env 
 # -*- coding: utf-8 -*-
 """
 Created on Sun Dec  8 15:07:07 2024
