@@ -12,7 +12,7 @@ matplotlib = 3.9.3
 ### Execution:
 Start by running *FinalProj/4B_Mechanism.ipynb*, make sure to follow every block individually instead of doing *run all*. Use the following values for the initial **R2, initial angle = 270, inital angular velocity = 6.81 rad/s**. <br>
 After running that, execute *FinalProj/Final_Project_V3_JNotebook.ipynb* to get the acceleration plots. 
-
+### Final Report is below: &darr;
 ### Introduction:
     Introduction
         This project aims to understand the dynamics of a windshield wiper system by creating a model that will take an input torque and assess the output normal force. Stemming from an interest in automobiles due to our collective participation in motorsports, we aimed to assess the windshield wiper system that identified with the knowledge we have on four bar linkages. To do this, we assessed the fastest speed of the windshield wipers on a 2015 Toyota Camry LE. Using Tracker, we obtained data for the position, velocity, and acceleration of windshield wiper. This was used to confirm our model made using Python.
